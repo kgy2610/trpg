@@ -157,3 +157,18 @@ button.danger {
 .clue-body { margin: 6px 0 0; line-height: 1.6; color: #cfcfd6; }
 .clue-item.revealed .clue-head strong { color: #c9a14a; }
 .clue-actions { margin-top: 6px; }
+
+.dice-stats { display: flex; gap: 8px; margin: 8px 0; }
+.dice-stats button { flex: 1; }
+.dice-stats button.selected { background: #c9a14a; color: #14161c; }
+#dice-reason { width: 100%; margin: 8px 0; }
+.dice-row { padding: 10px 0; border-bottom: 1px solid #2c303c; }
+.dice-row:last-child { border-bottom: 0; }
+.dice-head { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.dice-math { margin: 6px 0 0; font-size: 20px; font-weight: 700; }
+.dice-reason { margin: 4px 0 0; color: #cfcfd6; }
+.badge.outcome-success { background: #2f6f4f; color: #fff; }
+.badge.outcome-partial { background: #8a6d2a; color: #fff; }
+.badge.outcome-failure { background: #8a3b3b; color: #fff; }
+.dice-row.fresh { animation: dice-flash 1.5s ease-out; }
+@keyframes dice-flash { from { background: #3a3320; } to { background: transparent; } }

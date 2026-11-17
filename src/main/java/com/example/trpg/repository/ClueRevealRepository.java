@@ -13,4 +13,7 @@ public interface ClueRevealRepository extends JpaRepository<ClueReveal, Long> {
     List<ClueReveal> findByRoomOrderByIdAsc(Room room);
 
     Optional<ClueReveal> findByRoomAndClueKey(Room room, String clueKey);
+
+    // 개발용: 방의 공개 기록을 모두 삭제 (게임 초기화용)
+    void deleteByRoom(Room room);
 }

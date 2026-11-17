@@ -71,6 +71,14 @@ public class Player {
         this.ready = true;
     }
 
+    // 개발용: 역할 배정과 진행 상태를 모두 초기화
+    public void resetGame() {
+        this.characterKey = null;
+        this.secretRole = null;
+        this.ready = false;
+        this.rejoinAllowed = false;
+    }
+
     public Long getId() { return id; }
     public Room getRoom() { return room; }
     public String getNickname() { return nickname; }
