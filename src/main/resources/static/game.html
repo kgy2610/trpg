@@ -111,6 +111,13 @@
         </ul>
         </section>
 
+        <!-- [추가] 판정 규칙 섹션 아래, conn 문단 위에 추가. 개발용이라 배포 전에 삭제할 것 -->
+        <section class="card" id="dev-card" hidden>
+            <h2>개발용 도구 (GM 전용)</h2>
+            <p class="hint">게임을 강제로 중단하고 모든 참가자를 대기실로 돌려보냅니다. 역할, 시계, 단서, 판정 기록이 모두 초기화됩니다. 배포 전에 삭제할 기능입니다.</p>
+            <button id="dev-reset" type="button" class="danger">게임 강제 중단 (대기실로)</button>
+        </section>
+
         <p id="conn" class="hint"></p>
         <p id="error" class="error" hidden></p>
     </main>
@@ -119,5 +126,6 @@
     <script src="/js/clock.js"></script>
     <script src="/js/clues.js"></script>
     <script src="/js/game.js"></script>
+    <script src="/js/dev.js"></script>
     </body>
 </html>

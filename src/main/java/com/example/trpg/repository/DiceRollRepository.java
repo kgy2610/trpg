@@ -15,4 +15,7 @@ public interface DiceRollRepository extends JpaRepository<DiceRoll, Long> {
 
     // 쿨다운 검사용: 이 플레이어의 가장 최근 판정
     Optional<DiceRoll> findFirstByPlayerOrderByIdDesc(Player player);
+
+    // 개발용: 방의 판정 기록을 모두 삭제 (게임 초기화용)
+    void deleteByRoom(Room room);
 }

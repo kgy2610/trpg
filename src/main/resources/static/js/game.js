@@ -204,6 +204,13 @@ function updateReadingControls(room) {
 
 // 참가자 목록 (모두에게 접속 상태 표시)
 function renderPlayers(room) {
+    // 개발용: 방이 대기 상태로 돌아갔다면 대기실 화면으로 이동
+    if (room.status === 'WAITING') {
+        stopped = true;
+        location.href = '/room.html';
+        return;
+    }
+
     const list = document.getElementById('players');
     list.replaceChildren();
     room.players.forEach((p) => {
@@ -333,6 +340,7 @@ function startRealtime() {
             stompClient.subscribe('/topic/room/' + session.code + '/lobby', (m) => {
                 const room = JSON.parse(m.body);
                 renderPlayers(room);
+                if (stopped) return;
                 if (room.status !== lastStatus) loadRole();
             });
             // 공개된 단서 방송 (공개된 것만 도착)

@@ -47,6 +47,13 @@ public class Room {
         this.clockValue = clockValue;
     }
 
+    // 개발용: 방을 처음(대기) 상태로 되돌림
+    public void resetToWaiting() {
+        this.status = RoomStatus.WAITING;
+        this.readingEndsAt = null;
+        this.clockValue = 0;
+    }
+
     public Long getId() { return id; }
     public String getCode() { return code; }
     public RoomStatus getStatus() { return status; }
