@@ -32,6 +32,19 @@
             <ul id="clock-events" class="abilities" hidden></ul>
         </section>
 
+        <section class="card" id="clues-card" hidden>
+            <h2>공개된 단서</h2>
+            <p id="clues-empty" class="hint">아직 공개된 단서가 없습니다.</p>
+            <div id="clues-list"></div>
+        </section>
+
+        <!-- 단서 관리: GM에게만 보임 -->
+        <section class="card" id="clue-gm-card" hidden>
+            <h2>단서 관리 (GM 전용)</h2>
+            <p class="hint">'공개'를 누르면 모든 플레이어의 화면에 이 단서가 나타납니다. 실수했다면 '숨기기'로 되돌릴 수 있습니다.</p>
+            <div id="clue-gm-list"></div>
+        </section>
+
         <section class="card">
         <h2>오프닝</h2>
         <p class="story">새벽 1시 12분. 설산을 가로지르던 야간 특급 7호가 터널 한가운데서 멈춘다. 조명이 한 번 꺼졌다 켜진다. 승무원은 보이지 않는다. 기관실 문은 안에서 잠겨 있다.
@@ -104,6 +117,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
     <script src="/js/clock.js"></script>
+    <script src="/js/clues.js"></script>
     <script src="/js/game.js"></script>
     </body>
 </html>
