@@ -232,6 +232,7 @@ function renderPlayers(room) {
     renderClueCards(room);    // 단서 카드 표시
     renderDiceCard(room);     // 주사위 카드 표시
     renderWhisperCards(room); // 귓속말 카드 표시
+    renderEndingCards(room);  // 결말 카드 표시
 }
 
 // 참가자 목록을 처음 한 번 REST로 가져옴 (구독 후 호출해서 그 사이의 변화를 놓치지 않음)

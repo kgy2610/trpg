@@ -203,3 +203,8 @@ textarea, select {
   font-weight: 700;
   cursor: pointer;
 }
+
+.check-row { display: flex; align-items: center; gap: 8px; margin: 10px 0; cursor: pointer; }
+input[type="checkbox"] { width: auto; margin: 0; padding: 0; }
+.ending-epilogue { white-space: pre-line; line-height: 1.8; margin: 8px 0 16px; }
+#ending-title { font-size: 26px; }
