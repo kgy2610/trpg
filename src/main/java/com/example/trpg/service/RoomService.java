@@ -101,7 +101,7 @@ public class RoomService {
 
         List<PlayerInfo> players = playerRepository.findByRoomOrderByIdAsc(room).stream()
                 .map(p -> new PlayerInfo(p.getNickname(), p.isGm(), presenceService.isOnline(p.getId()),
-                        p.isRejoinAllowed(), p.isReady()))   // [수정] ready 추가
+                        p.isRejoinAllowed(), p.isReady()))
                 .toList();
 
         return new RoomInfo(room.getCode(), room.getStatus().name(), MAX_PLAYERS, players, room.getClockValue());
