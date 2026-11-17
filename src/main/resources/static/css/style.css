@@ -1,0 +1,143 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #14161c;
+  color: #e8e8ec;
+  font-family: "Pretendard", "Malgun Gothic", sans-serif;
+}
+
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 32px 16px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 28px;
+}
+.subtitle {
+  margin: 4px 0 24px;
+  color: #9a9aa6;
+}
+
+.card {
+  background: #1e212b;
+  border: 1px solid #2c303c;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.card h2 {
+  margin: 0 0 12px;
+  font-size: 18px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+input {
+  padding: 10px;
+  border: 1px solid #3a3f4e;
+  border-radius: 6px;
+  background: #14161c;
+  color: inherit;
+  font-size: 15px;
+}
+
+button {
+  padding: 10px;
+  border: 0;
+  border-radius: 6px;
+  background: #c9a14a;
+  color: #14161c;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.code {
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: 6px;
+  margin: 4px 0;
+}
+.hint {
+  color: #9a9aa6;
+  font-size: 14px;
+}
+.error {
+  color: #ff7b7b;
+}
+
+.players {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.players li {
+  padding: 8px 0;
+  border-bottom: 1px solid #2c303c;
+}
+.badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 8px;
+  border-radius: 10px;
+  background: #3a3f4e;
+  font-size: 12px;
+}
+
+.badge.on {
+  background: #2f6f4f;
+}
+.badge.off {
+  background: #5a3a3a;
+}
+
+button.secondary {
+  background: #3a3f4e;
+  color: #e8e8ec;
+  margin-top: 8px;
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.players li {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.players .badge {
+  margin-left: 0;
+}
+button.mini {
+  padding: 2px 10px;
+  font-size: 12px;
+}
+button.danger {
+  background: #8a3b3b;
+  color: #fff;
+}
+
+.gm-controls { margin-left: auto; display: flex; align-items: center; gap: 6px; }
+
+.story, .secret-body { white-space: pre-line; line-height: 1.7; }
+.timer { font-size: 40px; font-weight: 700; margin: 4px 0; letter-spacing: 2px; }
+.stats { display: flex; gap: 8px; margin: 8px 0; }
+.stat { flex: 1; background: #14161c; border: 1px solid #2c303c; border-radius: 8px; padding: 8px; text-align: center; }
+.stat b { display: block; font-size: 22px; }
+.stat span { color: #9a9aa6; font-size: 12px; }
+.abilities { margin: 8px 0 0; padding-left: 20px; line-height: 1.6; }
+.assign-table { width: 100%; border-collapse: collapse; }
+.assign-table th, .assign-table td { text-align: left; padding: 6px 4px; border-bottom: 1px solid #2c303c; }
+.badge.stowaway { background: #8a3b3b; color: #fff; }

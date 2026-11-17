@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>게임 - 마지막 열차</title>
+    <link rel="stylesheet" href="/css/style.css">
+    </head>
+    <body>
+    <main class="container">
+        <h1>마지막 열차</h1>
+        <p id="phase" class="hint"></p>
+
+        <section class="card" id="timer-card" hidden>
+            <h2>읽기 시간</h2>
+            <p id="timer" class="timer"></p>
+            <p id="timer-note" class="hint">남은 시간 동안 아래 카드를 읽고 숙지하세요.</p>
+            <p id="ready-count" class="hint"></p>
+            <button id="ready-btn" type="button" hidden>읽었어요</button>
+            <button id="begin-btn" type="button" class="secondary" hidden>바로 게임 시작</button>
+        </section>
+
+        <section class="card">
+        <h2>오프닝</h2>
+        <p class="story">새벽 1시 12분. 설산을 가로지르던 야간 특급 7호가 터널 한가운데서 멈춘다. 조명이 한 번 꺼졌다 켜진다. 승무원은 보이지 않는다. 기관실 문은 안에서 잠겨 있다.
+
+                        스피커에서 지직거리는 방송이 흘러나온다.
+                        “이 열차는 60분 뒤 다시 출발합니다. 승객 여러분 중 한 명은 이 열차에 타선 안 될 사람입니다. 부디…”
+
+                        방송이 끊긴다. 복도 어딘가에서 누군가 비명을 지른다.</p>
+        </section>
+
+        <!-- 플레이어에게만 보임 -->
+        <section class="card" id="character-card" hidden>
+        <h2>내 캐릭터</h2>
+        <p><strong id="char-name"></strong> · <span id="char-job"></span></p>
+        <p class="hint" id="char-concept"></p>
+        <div class="stats">
+            <div class="stat"><b id="stat-strength"></b><span>힘</span></div>
+            <div class="stat"><b id="stat-mind"></b><span>머리</span></div>
+            <div class="stat"><b id="stat-charm"></b><span>매력</span></div>
+        </div>
+        <h3>할 수 있는 일</h3>
+        <ul id="char-abilities" class="abilities"></ul>
+        </section>
+
+        <section class="card" id="secret-card" hidden>
+        <h2 id="secret-title">비밀 카드</h2>
+        <p id="secret-body" class="secret-body"></p>
+        <button id="secret-toggle" type="button"></button>
+        </section>
+
+        <!-- GM에게만 보임 -->
+        <section class="card" id="gm-card" hidden>
+        <h2>배정표 (GM 전용)</h2>
+        <p class="hint">GM은 모든 배정을 알고 진행합니다. 이 화면을 다른 사람에게 보여주지 마세요.</p>
+        <table class="assign-table">
+            <thead><tr><th>닉네임</th><th>캐릭터</th><th>비밀 카드</th></tr></thead>
+            <tbody id="assign-body"></tbody>
+        </table>
+        </section>
+
+        <section class="card" id="players-card">
+            <h2>참가자</h2>
+            <ul id="players" class="players"></ul>
+            <p id="players-hint" class="hint" hidden>
+                접속이 끊긴 참가자에게 '재접속 허용'을 누르면, 그 사람이 방 코드와 같은 닉네임으로 다시 입장해 기존 역할을 이어받을 수 있습니다. 허용은 한 번 입장하면 자동으로 꺼집니다.
+            </p>
+            </section>
+
+            <section class="card">
+            <h2>판정 규칙</h2>
+            <ul class="abilities">
+                <li>위험하거나 결과가 불확실한 행동을 할 때만 2d6 + 능력치를 굴립니다.</li>
+                <li>10 이상은 성공, 7~9는 대가를 치르는 성공, 6 이하는 실패이며 상황이 나빠집니다.</li>
+                <li>사건이 터지거나 판정에 실패할 때마다 시계(6칸)가 차오릅니다. 6칸이 차면 열차가 출발합니다.</li>
+            </ul>
+        </section>
+
+        <section class="card">
+        <h2>판정 규칙</h2>
+        <ul class="abilities">
+            <li>위험하거나 결과가 불확실한 행동을 할 때만 2d6 + 능력치를 굴립니다.</li>
+            <li>10 이상은 성공, 7~9는 대가를 치르는 성공, 6 이하는 실패이며 상황이 나빠집니다.</li>
+            <li>사건이 터지거나 판정에 실패할 때마다 시계(6칸)가 차오릅니다. 6칸이 차면 열차가 출발합니다.</li>
+        </ul>
+        </section>
+
+        <p id="conn" class="hint"></p>
+        <p id="error" class="error" hidden></p>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+    <script src="/js/game.js"></script>
+    </body>
+</html>

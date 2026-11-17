@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>대기실 - 마지막 열차</title>
+        <link rel="stylesheet" href="/css/style.css" />
+    </head>
+    <body>
+        <main class="container">
+        <h1>대기실</h1>
+
+        <section class="card">
+            <p>방 코드</p>
+            <p id="room-code" class="code"></p>
+            <p class="hint">이 코드를 친구들에게 알려주세요.</p>
+        </section>
+
+        <section class="card">
+            <h2>참가자 <span id="count"></span></h2>
+            <ul id="players" class="players"></ul>
+        </section>
+
+        <p id="status" class="hint"></p>
+        <p id="conn" class="hint"></p>
+        <p id="error" class="error" hidden></p>
+
+        <button id="start" hidden>게임 시작</button>
+        <!-- [추가] GM에게만 js가 보여 줌 -->
+        <button id="leave" class="secondary" hidden>나가기</button>
+        </main>
+
+        <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+        <script src="/js/room.js"></script>
+    </body>
+</html>
