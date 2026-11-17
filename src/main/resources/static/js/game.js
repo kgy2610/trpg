@@ -231,6 +231,7 @@ function renderPlayers(room) {
     renderClock(room);        // 시계 표시
     renderClueCards(room);    // 단서 카드 표시
     renderDiceCard(room);     // 주사위 카드 표시
+    renderWhisperCards(room); // 귓속말 카드 표시
 }
 
 // 참가자 목록을 처음 한 번 REST로 가져옴 (구독 후 호출해서 그 사이의 변화를 놓치지 않음)
@@ -294,6 +295,7 @@ function renderRole(role) {
         updateSecret();
     }
     setDiceCharacter(role.gm ? null : role.character);
+    setWhisperAssignments(role.gm ? role.assignments : null);
 
     const showTimer = role.status === 'READING' && role.readingEndsAtMillis;
     document.getElementById('timer-card').hidden = !showTimer;
@@ -349,10 +351,14 @@ function startRealtime() {
             stompClient.subscribe('/topic/room/' + session.code + '/clues', (m) => renderClues(JSON.parse(m.body)));
             // 주사위 판정 방송 (최근 20개, 최신순)
             stompClient.subscribe('/topic/room/' + session.code + '/dice', (m) => renderDice(JSON.parse(m.body)));
+            // [추가] 개인 채널: 나에게만 오는 귓속말 (플레이어), 내가 보낸 기록 (GM)
+            stompClient.subscribe('/user/queue/whisper', (m) => renderWhispers(JSON.parse(m.body), true));
+            stompClient.subscribe('/user/queue/whisper-log', (m) => renderGmWhispers(JSON.parse(m.body)));
             loadRole();      // 구독 후에 한 번 조회해서 그 사이의 변화를 놓치지 않음
             loadPlayers();
             loadClues();
             loadDice();
+            loadWhispers();
         },
         onWebSocketClose: () => {
         if (!stopped) setConn('연결이 끊겼습니다. 다시 연결하는 중…');

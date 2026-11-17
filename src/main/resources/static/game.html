@@ -32,6 +32,13 @@
             <ul id="clock-events" class="abilities" hidden></ul>
         </section>
 
+        <section class="card" id="whisper-card" hidden>
+            <h2>GM의 귓속말</h2>
+            <p class="hint">GM이 나에게만 보낸 글입니다. 다른 사람에게는 보이지 않습니다.</p>
+            <p id="whisper-empty" class="hint">아직 받은 귓속말이 없습니다.</p>
+            <div id="whisper-list"></div>
+        </section>
+
         <section class="card" id="clues-card" hidden>
             <h2>공개된 단서</h2>
             <p id="clues-empty" class="hint">아직 공개된 단서가 없습니다.</p>
@@ -43,6 +50,18 @@
             <h2>단서 관리 (GM 전용)</h2>
             <p class="hint">'공개'를 누르면 모든 플레이어의 화면에 이 단서가 나타납니다. 실수했다면 '숨기기'로 되돌릴 수 있습니다.</p>
             <div id="clue-gm-list"></div>
+        </section>
+
+        <section class="card" id="whisper-gm-card" hidden>
+            <h2>귓속말 보내기 (GM 전용)</h2>
+            <p class="hint">선택한 플레이어에게만 전달됩니다. 다른 플레이어에게는 어떤 경로로도 보이지 않습니다.</p>
+            <select id="whisper-target"></select>
+            <textarea id="whisper-text" maxlength="200" placeholder="전하고 싶은 내용 (최대 200자)"></textarea>
+            <p id="whisper-count" class="hint">0 / 200</p>
+            <button id="whisper-send" type="button">귓속말 보내기</button>
+            <h3>보낸 기록</h3>
+            <p id="whisper-log-empty" class="hint">아직 보낸 귓속말이 없습니다.</p>
+            <div id="whisper-log"></div>
         </section>
 
         <section class="card" id="dice-card" hidden>
@@ -139,10 +158,13 @@
         <p id="error" class="error" hidden></p>
     </main>
 
+    <div id="whisper-toast" class="toast" hidden>GM의 귓속말이 도착했습니다. 눌러서 확인하세요.</div>
+
     <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
     <script src="/js/clock.js"></script>
     <script src="/js/clues.js"></script>
     <script src="/js/dice.js"></script>
+    <script src="/js/whisper.js"></script>
     <script src="/js/game.js"></script>
     <script src="/js/dev.js"></script>
     </body>
