@@ -230,6 +230,7 @@ function renderPlayers(room) {
     updateReadingControls(room);
     renderClock(room);        // 시계 표시
     renderClueCards(room);    // 단서 카드 표시
+    renderDiceCard(room);     // 주사위 카드 표시
 }
 
 // 참가자 목록을 처음 한 번 REST로 가져옴 (구독 후 호출해서 그 사이의 변화를 놓치지 않음)
@@ -292,6 +293,7 @@ function renderRole(role) {
         secret = role.secret;
         updateSecret();
     }
+    setDiceCharacter(role.gm ? null : role.character);
 
     const showTimer = role.status === 'READING' && role.readingEndsAtMillis;
     document.getElementById('timer-card').hidden = !showTimer;
@@ -333,21 +335,24 @@ function startRealtime() {
         connectHeaders: { token: session.token },
         reconnectDelay: 3000,
         onConnect: () => {
-        setConn('실시간 연결됨');
+            setConn('실시간 연결됨');
             // 게임 시작 때 서버가 보내는 내 역할 (본인 것만 도착)
             stompClient.subscribe('/user/queue/role', (m) => renderRole(JSON.parse(m.body)));
             // 방 변동 방송: 참가자 목록 갱신 + 방 상태가 바뀌면 내 역할 화면을 다시 불러옴
             stompClient.subscribe('/topic/room/' + session.code + '/lobby', (m) => {
                 const room = JSON.parse(m.body);
                 renderPlayers(room);
-                if (stopped) return;
+                if (stopped) return;   // 대기실로 이동하는 중이면 더 처리하지 않음
                 if (room.status !== lastStatus) loadRole();
             });
             // 공개된 단서 방송 (공개된 것만 도착)
             stompClient.subscribe('/topic/room/' + session.code + '/clues', (m) => renderClues(JSON.parse(m.body)));
+            // 주사위 판정 방송 (최근 20개, 최신순)
+            stompClient.subscribe('/topic/room/' + session.code + '/dice', (m) => renderDice(JSON.parse(m.body)));
             loadRole();      // 구독 후에 한 번 조회해서 그 사이의 변화를 놓치지 않음
             loadPlayers();
             loadClues();
+            loadDice();
         },
         onWebSocketClose: () => {
         if (!stopped) setConn('연결이 끊겼습니다. 다시 연결하는 중…');

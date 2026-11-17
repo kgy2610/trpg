@@ -45,6 +45,23 @@
             <div id="clue-gm-list"></div>
         </section>
 
+        <section class="card" id="dice-card" hidden>
+            <h2>주사위 판정</h2>
+            <p id="dice-gm-hint" class="hint" hidden>플레이어가 굴린 결과가 아래에 표시됩니다. 판정 결과에 따라 시계는 GM이 직접 올립니다.</p>
+
+            <!-- 굴리기 컨트롤: 플레이어에게만 보임 -->
+            <div id="dice-controls" hidden>
+                <p class="hint">위험하거나 결과가 불확실한 행동을 할 때 굴립니다. 능력치를 고르세요.</p>
+                <div id="dice-stats" class="dice-stats"></div>
+                <input id="dice-reason" type="text" maxlength="30" placeholder="무엇을 하나요? (선택, 예: 문 부수기)">
+                <button id="dice-roll" type="button">주사위 굴리기</button>
+            </div>
+
+            <h3>판정 기록</h3>
+            <p id="dice-empty" class="hint">아직 굴린 주사위가 없습니다.</p>
+            <div id="dice-log"></div>
+        </section>
+
         <section class="card">
         <h2>오프닝</h2>
         <p class="story">새벽 1시 12분. 설산을 가로지르던 야간 특급 7호가 터널 한가운데서 멈춘다. 조명이 한 번 꺼졌다 켜진다. 승무원은 보이지 않는다. 기관실 문은 안에서 잠겨 있다.
@@ -125,6 +142,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
     <script src="/js/clock.js"></script>
     <script src="/js/clues.js"></script>
+    <script src="/js/dice.js"></script>
     <script src="/js/game.js"></script>
     <script src="/js/dev.js"></script>
     </body>
