@@ -138,6 +138,38 @@ public class GameService {
         return room.getCode();
     }
 
+    @Transactional
+    public String setClock(String code, String token, int value) {
+        Room room = lockRoom(code);
+        Player me = requirePlayer(room, token);
+
+        // 서버가 최종 방어선: 화면에서 버튼을 숨겨도 요청을 직접 보내면 우회 가능
+        if (!me.isGm()) {
+            throw new ApiException(HttpStatus.FORBIDDEN, "GM만 시계를 조작할 수 있습니다.");
+        }
+        if (room.getStatus() != RoomStatus.PLAYING) {
+            throw new ApiException(HttpStatus.CONFLICT, "게임 진행 중에만 시계를 조작할 수 있습니다.");
+        }
+        if (value < 0 || value > GameContent.CLOCK_MAX) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "시계는 0~" + GameContent.CLOCK_MAX + "칸 사이로만 설정할 수 있습니다.");
+        }
+
+        room.setClockValue(value);   // 트랜잭션이 끝날 때 자동으로 DB에 반영됨
+        return room.getCode();
+    }
+
+    // GM 전용: 칸별 사건 메모
+    @Transactional(readOnly = true)
+    public List<String> getClockEvents(String code, String token) {
+        Room room = roomRepository.findByCode(normalize(code))
+                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "존재하지 않는 방 코드입니다."));
+        Player me = requirePlayer(room, token);
+        if (!me.isGm()) {
+            throw new ApiException(HttpStatus.FORBIDDEN, "GM만 볼 수 있습니다.");
+        }
+        return GameContent.clockEvents();
+    }
+
     // 읽기 시간이 끝난 방들을 게임 중으로 전환 (스케줄러가 호출). 반환값: 전환된 방 코드들
     @Transactional
     public List<String> advanceExpiredRooms() {

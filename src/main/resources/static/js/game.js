@@ -221,6 +221,7 @@ function renderPlayers(room) {
         list.appendChild(li);
     });
     updateReadingControls(room);
+    renderClock(room);
 }
 
 // 참가자 목록을 처음 한 번 REST로 가져옴 (구독 후 호출해서 그 사이의 변화를 놓치지 않음)
