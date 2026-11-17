@@ -8,6 +8,7 @@ import com.example.trpg.repository.ClueRevealRepository;
 import com.example.trpg.repository.DiceRollRepository;
 import com.example.trpg.repository.PlayerRepository;
 import com.example.trpg.repository.RoomRepository;
+import com.example.trpg.repository.WhisperRepository;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -21,15 +22,18 @@ public class DevResetService {
     private final PlayerRepository playerRepository;
     private final ClueRevealRepository clueRevealRepository;
     private final DiceRollRepository diceRollRepository;
+    private final WhisperRepository whisperRepository;
 
     public DevResetService(RoomRepository roomRepository,
                             PlayerRepository playerRepository,
                             ClueRevealRepository clueRevealRepository,
-                            DiceRollRepository diceRollRepository) {
+                            DiceRollRepository diceRollRepository,
+                            WhisperRepository whisperRepository) { 
         this.roomRepository = roomRepository;
         this.playerRepository = playerRepository;
         this.clueRevealRepository = clueRevealRepository;
         this.diceRollRepository = diceRollRepository;
+        this.whisperRepository = whisperRepository;
     }
 
     // 게임을 강제로 중단하고 대기실 상태로 되돌림. 반환값: 방송에 쓸 방 코드
@@ -56,7 +60,8 @@ public class DevResetService {
             throw new ApiException(HttpStatus.CONFLICT, "이미 대기 중입니다.");
         }
 
-        // 판정 기록과 공개 기록을 먼저 지우고, 참가자와 방 상태를 되돌림
+        // 기록을 먼저 지우고, 참가자와 방 상태를 되돌림
+        whisperRepository.deleteByRoom(room);
         diceRollRepository.deleteByRoom(room);
         clueRevealRepository.deleteByRoom(room);
         for (Player player : playerRepository.findByRoomOrderByIdAsc(room)) {

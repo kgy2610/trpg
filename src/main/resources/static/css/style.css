@@ -172,3 +172,34 @@ button.danger {
 .badge.outcome-failure { background: #8a3b3b; color: #fff; }
 .dice-row.fresh { animation: dice-flash 1.5s ease-out; }
 @keyframes dice-flash { from { background: #3a3320; } to { background: transparent; } }
+
+textarea, select {
+  width: 100%;
+  margin: 6px 0;
+  padding: 10px;
+  border: 1px solid #3a3f4e;
+  border-radius: 6px;
+  background: #14161c;
+  color: inherit;
+  font-size: 15px;
+  font-family: inherit;
+}
+#whisper-text { min-height: 90px; resize: vertical; }
+.whisper-item { padding: 10px 0; border-bottom: 1px solid #2c303c; }
+.whisper-item:last-child { border-bottom: 0; }
+.whisper-text { margin: 0; line-height: 1.6; white-space: pre-line; }
+.whisper-item.fresh { animation: dice-flash 1.5s ease-out; }
+.toast {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  max-width: 90%;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: #c9a14a;
+  color: #14161c;
+  font-weight: 700;
+  cursor: pointer;
+}
