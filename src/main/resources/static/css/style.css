@@ -150,3 +150,10 @@ button.danger {
 #clock-events li.current { color: #c9a14a; font-weight: 700; }
 #clock-events li.done { color: #6c6f7a; }
 [hidden] { display: none !important; }
+
+.clue-item { padding: 10px 0; border-bottom: 1px solid #2c303c; }
+.clue-item:last-child { border-bottom: 0; }
+.clue-head { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.clue-body { margin: 6px 0 0; line-height: 1.6; color: #cfcfd6; }
+.clue-item.revealed .clue-head strong { color: #c9a14a; }
+.clue-actions { margin-top: 6px; }
