@@ -141,3 +141,12 @@ button.danger {
 .assign-table { width: 100%; border-collapse: collapse; }
 .assign-table th, .assign-table td { text-align: left; padding: 6px 4px; border-bottom: 1px solid #2c303c; }
 .badge.stowaway { background: #8a3b3b; color: #fff; }
+
+.clock-cells { display: flex; gap: 8px; margin: 8px 0; }
+.clock-cell { flex: 1; height: 28px; border-radius: 6px; border: 1px solid #3a3f4e; background: #14161c; }
+.clock-cell.filled { background: #c9a14a; border-color: #c9a14a; }
+.clock-gm { display: flex; gap: 8px; margin: 8px 0; }
+.clock-gm button { flex: 1; }
+#clock-events li.current { color: #c9a14a; font-weight: 700; }
+#clock-events li.done { color: #6c6f7a; }
+[hidden] { display: none !important; }

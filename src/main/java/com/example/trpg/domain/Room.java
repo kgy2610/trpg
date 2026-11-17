@@ -43,6 +43,10 @@ public class Room {
         this.status = RoomStatus.PLAYING;
     }
 
+    public void setClockValue(int clockValue) {
+        this.clockValue = clockValue;
+    }
+
     public Long getId() { return id; }
     public String getCode() { return code; }
     public RoomStatus getStatus() { return status; }

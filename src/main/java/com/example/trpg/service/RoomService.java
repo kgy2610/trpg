@@ -104,7 +104,7 @@ public class RoomService {
                         p.isRejoinAllowed(), p.isReady()))   // [수정] ready 추가
                 .toList();
 
-        return new RoomInfo(room.getCode(), room.getStatus().name(), MAX_PLAYERS, players);
+        return new RoomInfo(room.getCode(), room.getStatus().name(), MAX_PLAYERS, players, room.getClockValue());
     }
 
     @Transactional

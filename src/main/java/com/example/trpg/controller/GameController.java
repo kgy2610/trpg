@@ -1,12 +1,15 @@
 package com.example.trpg.controller;
 
 import com.example.trpg.dto.GameDtos.MyRoleResponse;
+import com.example.trpg.dto.RoomDtos.ClockRequest;
 import com.example.trpg.event.GameStartedEvent;
 import com.example.trpg.event.LobbyChangedEvent;
 import com.example.trpg.service.GameService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/rooms")
@@ -31,7 +34,7 @@ public class GameController {
         return ResponseEntity.noContent().build();
     }
 
-    // [추가] 플레이어가 "읽었어요". 전원이 누르면 서버가 게임 중으로 전환
+    // 플레이어가 "읽었어요". 전원이 누르면 서버가 게임 중으로 전환
     @PostMapping("/{code}/ready")
     public ResponseEntity<Void> ready(@PathVariable String code,
                                     @RequestHeader(value = "X-Player-Token", required = false) String token) {
@@ -40,13 +43,30 @@ public class GameController {
         return ResponseEntity.noContent().build();
     }
 
-    // [추가] GM이 읽기 시간을 건너뛰고 바로 시작
+    // GM이 읽기 시간을 건너뛰고 바로 시작
     @PostMapping("/{code}/begin")
     public ResponseEntity<Void> begin(@PathVariable String code,
                                     @RequestHeader(value = "X-Player-Token", required = false) String token) {
         String roomCode = gameService.beginPlaying(code, token);
         eventPublisher.publishEvent(new LobbyChangedEvent(roomCode));
         return ResponseEntity.noContent().build();
+    }
+
+    // GM이 시계를 n칸으로 설정 (같은 값을 여러 번 보내도 결과가 같음)
+    @PostMapping("/{code}/clock")
+    public ResponseEntity<Void> setClock(@PathVariable String code,
+                                        @RequestHeader(value = "X-Player-Token", required = false) String token,
+                                        @RequestBody ClockRequest request) {
+        String roomCode = gameService.setClock(code, token, request.value());
+        eventPublisher.publishEvent(new LobbyChangedEvent(roomCode));   // 방 정보 방송에 clockValue가 포함되어 있음
+        return ResponseEntity.noContent().build();
+    }
+
+    // GM 전용: 칸별 사건 메모
+    @GetMapping("/{code}/gm/clock-events")
+    public List<String> clockEvents(@PathVariable String code,
+                                    @RequestHeader(value = "X-Player-Token", required = false) String token) {
+        return gameService.getClockEvents(code, token);
     }
 
     // 내 역할 조회. 새로고침, 재접속 때 푸시를 놓쳤어도 다시 가져올 수 있음
