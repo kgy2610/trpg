@@ -208,6 +208,7 @@ textarea, select {
 input[type="checkbox"] { width: auto; margin: 0; padding: 0; }
 .ending-epilogue { white-space: pre-line; line-height: 1.8; margin: 8px 0 16px; }
 #ending-title { font-size: 26px; }
+#ending-restart { margin-top: var(--gap); }
 
 .players li { padding: 8px 10px; border-radius: 6px; }
 
@@ -256,3 +257,5 @@ input[type="checkbox"] { width: auto; margin: 0; padding: 0; }
 :root { --gap: 16px; }
 .card { margin-bottom: var(--gap); }
 .page-title { margin-bottom: var(--gap); }
+
+.assign-table tr.me td { background: rgba(204, 204, 204, 0.10); }

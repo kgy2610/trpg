@@ -149,12 +149,12 @@ function renderAssignments(list) {
         const tr = document.createElement('tr');
 
         const nameTd = document.createElement('td');
-        nameTd.textContent = a.nickname;
+        nameTd.textContent = a.characterName;   // 서버가 만든 "성 + 닉네임". 사용자 입력이 섞여 있으므로 textContent로 넣음
         tr.appendChild(nameTd);
 
-        const charTd = document.createElement('td');
-        charTd.textContent = a.characterName;
-        tr.appendChild(charTd);
+        const jobTd = document.createElement('td');
+        jobTd.textContent = a.job;
+        tr.appendChild(jobTd);
 
         const roleTd = document.createElement('td');
         roleTd.appendChild(makeBadge(a.secretTitle, a.secretTitle === '밀항자' ? 'stowaway' : ''));

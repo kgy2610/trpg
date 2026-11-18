@@ -115,25 +115,21 @@ async function loadEndingResult() {
 
 function renderEndingResult(r) {
     setText('ending-title', r.title);
-    setText('ending-epilogue', r.epilogue);   // 줄바꿈은 CSS(pre-line)가 처리
-    setText('ending-stowaway', r.stowawayNickname
-        ? '이번 판의 밀항자는 ' + r.stowawayNickname + ' 님이었습니다.'
-        : '');
+    setText('ending-epilogue', r.epilogue);
+
+    // 밀항자 이름은 배정표에서 찾아 "성 + 닉네임" 전체 이름으로 표시
+    const stowaway = r.assignments.find((a) => a.secretTitle === '밀항자');
+    setText('ending-stowaway', stowaway ? '이번 판의 밀항자는 ' + stowaway.characterName + ' 님이었습니다.' : '');
 
     const body = document.getElementById('ending-assign');
     body.replaceChildren();
     r.assignments.forEach((a) => {
         const tr = document.createElement('tr');
+        if (a.nickname === session.nickname) tr.classList.add('me');
 
         const nameTd = document.createElement('td');
-        // 닉네임은 사용자 입력이므로 textContent로 넣어 HTML 삽입을 막음
-        nameTd.textContent = a.nickname;
-        if (a.nickname === session.nickname) nameTd.appendChild(makeBadge('나'));
+        nameTd.textContent = a.characterName;
         tr.appendChild(nameTd);
-
-        const charTd = document.createElement('td');
-        charTd.textContent = a.characterName;
-        tr.appendChild(charTd);
 
         const roleTd = document.createElement('td');
         roleTd.appendChild(makeBadge(a.secretTitle, a.secretTitle === '밀항자' ? 'stowaway' : ''));

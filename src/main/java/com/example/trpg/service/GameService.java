@@ -255,6 +255,7 @@ public class GameService {
                     .map(p -> new AssignmentInfo(
                             p.getNickname(),
                             GameContent.displayName(p),
+                            GameContent.character(GameCharacter.valueOf(p.getCharacterKey())).job(),
                             GameContent.secret(SecretRole.valueOf(p.getSecretRole())).title()))
                     .toList();
             return new MyRoleResponse(true, null, null, assignments, status, endsAt, now);
