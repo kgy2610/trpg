@@ -100,12 +100,24 @@ function render(room) {
   list.replaceChildren();
   room.players.forEach(p => {
     const li = document.createElement('li');
+    if (p.nickname === session.nickname) li.classList.add('me');   // 내 줄은 배경을 채워서 표시
+
+    // 접속 상태: 닉네임 앞의 점. 마우스를 올리면 글자로 안내
+    const dot = document.createElement('span');
+    const label = p.online ? '접속 중' : '오프라인';
+    dot.className = 'dot ' + (p.online ? 'on' : 'off');
+    dot.dataset.tip = label;
+    dot.setAttribute('role', 'img');
+    dot.setAttribute('aria-label', label);
+    li.appendChild(dot);
+
     // 닉네임은 사용자 입력이므로 textContent로 넣어 HTML 삽입을 막음
-    li.textContent = p.nickname;
+    const nick = document.createElement('span');
+    nick.textContent = p.nickname;
+    li.appendChild(nick);
+
     if (p.gm) li.appendChild(makeBadge('GM'));
-    if (p.nickname === session.nickname) li.appendChild(makeBadge('나'));
-    li.appendChild(p.online ? makeBadge('접속 중', 'on') : makeBadge('오프라인', 'off'));
-    appendGmControls(li, p, room.status);
+    appendGmControls(li, p, room.status);   // GM 전용 버튼은 그대로
     list.appendChild(li);
   });
 

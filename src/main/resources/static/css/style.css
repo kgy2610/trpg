@@ -208,3 +208,47 @@ textarea, select {
 input[type="checkbox"] { width: auto; margin: 0; padding: 0; }
 .ending-epilogue { white-space: pre-line; line-height: 1.8; margin: 8px 0 16px; }
 #ending-title { font-size: 26px; }
+
+.players li { padding: 8px 10px; border-radius: 6px; }
+
+.players li.me {
+  background: rgba(204, 204, 204, 0.10);
+  border-bottom-color: transparent;
+}
+
+.dot {
+  position: relative;
+  display: inline-block;
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+.dot.on { background: #3ecf8e; }                                   /* 접속 중: 채워진 초록 */
+.dot.off { background: transparent; border: 2px solid #6c6f7a; }   /* 오프라인: 속이 빈 회색 */
+
+.dot::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+}
+
+.dot::after {
+  content: attr(data-tip);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 6px);
+  transform: translateX(-50%);
+  z-index: 5;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: #000;
+  color: #fff;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s;
+}
+.dot:hover::after { opacity: 1; }
