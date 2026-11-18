@@ -252,3 +252,7 @@ input[type="checkbox"] { width: auto; margin: 0; padding: 0; }
   transition: opacity 0.12s;
 }
 .dot:hover::after { opacity: 1; }
+
+:root { --gap: 16px; }
+.card { margin-bottom: var(--gap); }
+.page-title { margin-bottom: var(--gap); }
