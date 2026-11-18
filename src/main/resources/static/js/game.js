@@ -126,13 +126,13 @@ function renderCharacter(c) {
     });
 }
 
-// 비밀 카드: 가려 둔 상태에서는 문구를 화면 요소에서 아예 지워 둠 (CSS로 가리기만 하면 복사/검색으로 보일 수 있음)
+// 비밀 카드: 가려 둔 상태에서는 문구를 화면 요소에서 아예 지워 둠
 function updateSecret() {
     if (!secret) return;
     secretTitle.textContent = revealed ? secret.title : '비밀 카드';
     secretBody.textContent = revealed
         ? secret.description
-        : '버튼을 눌러 확인하세요. 먼저 주변 사람이 화면을 볼 수 없는지 확인하세요.';
+        : '버튼을 눌러 확인하세요.';
     secretToggle.textContent = revealed ? '가리기' : '탭해서 보기';
 }
 
@@ -204,7 +204,7 @@ function updateReadingControls(room) {
 
 // 참가자 목록 (모두에게 접속 상태 표시)
 function renderPlayers(room) {
-    // 개발용: 방이 대기 상태로 돌아갔다면 대기실 화면으로 이동
+    // 방이 대기 상태로 돌아갔다면 대기실 화면으로 이동
     if (room.status === 'WAITING') {
         stopped = true;
         location.href = '/room.html';
@@ -215,18 +215,30 @@ function renderPlayers(room) {
     list.replaceChildren();
     room.players.forEach((p) => {
         const li = document.createElement('li');
+        if (p.nickname === session.nickname) li.classList.add('me');
+
+        // 접속 상태: 마우스를 올리면 글자로 안내
+        const dot = document.createElement('span');
+        const label = p.online ? '접속 중' : '오프라인';
+        dot.className = 'dot ' + (p.online ? 'on' : 'off');
+        dot.dataset.tip = label;
+        dot.setAttribute('role', 'img');
+        dot.setAttribute('aria-label', label);
+        li.appendChild(dot);
+
         // 닉네임은 사용자 입력이므로 textContent로 넣어 HTML 삽입을 막음
-        li.textContent = p.nickname;
+        const nick = document.createElement('span');
+        nick.textContent = p.nickname;
+        li.appendChild(nick);
+
         if (p.gm) li.appendChild(makeBadge('GM'));
-        if (p.nickname === session.nickname) li.appendChild(makeBadge('나'));
-        li.appendChild(p.online ? makeBadge('접속 중', 'on') : makeBadge('오프라인', 'off'));
-        // 읽기 단계에서는 읽음 여부도 표시
         if (room.status === 'READING' && !p.gm) {
         li.appendChild(p.ready ? makeBadge('읽음', 'on') : makeBadge('읽는 중'));
         }
         appendGmControls(li, p, room.status);
         list.appendChild(li);
     });
+
     updateReadingControls(room);
     renderClock(room);        // 시계 표시
     renderClueCards(room);    // 단서 카드 표시
@@ -235,13 +247,12 @@ function renderPlayers(room) {
     renderEndingCards(room);  // 결말 카드 표시
 }
 
-// 참가자 목록을 처음 한 번 REST로 가져옴 (구독 후 호출해서 그 사이의 변화를 놓치지 않음)
+// 참가자 목록을 처음 한 번 REST로 가져옴
 async function loadPlayers() {
     try {
         const res = await fetch('/api/rooms/' + encodeURIComponent(session.code));
         if (res.ok) renderPlayers(await res.json());
     } catch (err) {
-        // 실패해도 다음 방송 때 갱신되므로 무시
     }
 }
 
@@ -261,7 +272,7 @@ function startTimer(endsAtMillis, serverNowMillis) {
         const remaining = endsAtMillis - (Date.now() + offset);
         if (remaining <= 0) {
         setText('timer', '00:00');
-        setText('timer-note', '읽기 시간이 끝났습니다. 곧 게임이 시작됩니다.');   // [수정] 서버가 자동으로 전환함
+        setText('timer-note', '읽기 시간이 끝났습니다. 곧 게임이 시작됩니다.');
         stopTimer();
         return;
         }
