@@ -16,6 +16,7 @@ function renderEndingCards(room) {
     document.getElementById('ending-gm-card').hidden = !(playing && session.gm);
     document.getElementById('ending-card').hidden = !ended;
     endingRestartBtn.hidden = !(ended && session.gm);
+    document.getElementById('opening-card').hidden = !!ended;
 
     if (playing && session.gm && !endingStateLoaded) {
         loadEndingState();
