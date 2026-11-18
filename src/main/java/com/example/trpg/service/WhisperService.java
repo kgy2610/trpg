@@ -92,7 +92,7 @@ public class WhisperService {
                     Player to = w.getRecipient();
                     String character = to.getCharacterKey() == null
                             ? ""
-                            : GameContent.character(GameCharacter.valueOf(to.getCharacterKey())).name();
+                            : GameContent.displayName(to);
                     return new GmWhisperView(w.getId(), to.getNickname(), character,
                             w.getMessage(), w.getCreatedAt().toEpochMilli());
                 })

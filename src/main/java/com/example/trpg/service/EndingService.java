@@ -85,7 +85,7 @@ public class EndingService {
                 .filter(p -> !p.isGm() && p.getCharacterKey() != null && p.getSecretRole() != null)
                 .map(p -> new AssignmentInfo(
                         p.getNickname(),
-                        GameContent.character(GameCharacter.valueOf(p.getCharacterKey())).name(),
+                        GameContent.displayName(p),
                         GameContent.secret(SecretRole.valueOf(p.getSecretRole())).title()))
                 .toList();
 

@@ -114,7 +114,7 @@ public class DiceService {
                     Player p = r.getPlayer();
                     String characterName = p.getCharacterKey() == null
                             ? ""
-                            : GameContent.character(GameCharacter.valueOf(p.getCharacterKey())).name();
+                            : GameContent.displayName(p);
                     Stat stat = Stat.valueOf(r.getStat());
                     DiceOutcome outcome = DiceOutcome.valueOf(r.getOutcome());
                     return new RollView(

@@ -254,7 +254,7 @@ public class GameService {
                     .filter(p -> !p.isGm())
                     .map(p -> new AssignmentInfo(
                             p.getNickname(),
-                            GameContent.character(GameCharacter.valueOf(p.getCharacterKey())).name(),
+                            GameContent.displayName(p),
                             GameContent.secret(SecretRole.valueOf(p.getSecretRole())).title()))
                     .toList();
             return new MyRoleResponse(true, null, null, assignments, status, endsAt, now);
@@ -263,7 +263,8 @@ public class GameService {
         if (me.getCharacterKey() == null || me.getSecretRole() == null) {
             throw new ApiException(HttpStatus.CONFLICT, "역할이 아직 배정되지 않았습니다.");
         }
-        CharacterCard character = GameContent.character(GameCharacter.valueOf(me.getCharacterKey()));
+        CharacterCard character = GameContent.character(GameCharacter.valueOf(me.getCharacterKey()))
+                .withName(GameContent.displayName(me));
         SecretCard secret = GameContent.secret(SecretRole.valueOf(me.getSecretRole()));
         return new MyRoleResponse(false, character, secret, null, status, endsAt, now);
     }
@@ -283,8 +284,11 @@ public class GameService {
         }
         Collections.shuffle(roles, random);
 
+        List<String> surnames = new ArrayList<>(GameContent.SURNAMES);
+        Collections.shuffle(surnames, random);
+
         for (int i = 0; i < n; i++) {
-            players.get(i).assign(characters.get(i).name(), roles.get(i).name());
+            players.get(i).assign(characters.get(i).name(), roles.get(i).name(), surnames.get(i));
         }
     }
 

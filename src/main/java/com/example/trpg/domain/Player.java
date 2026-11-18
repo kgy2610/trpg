@@ -32,6 +32,10 @@ public class Player {
     private String characterKey;
     private String secretRole;
 
+    // 게임 시작 시 배정되는 성 (그 전에는 null). 캐릭터 이름은 "성 + 닉네임"
+    @Column(length = 10)
+    private String surname;
+
     // GM이 게임 중 재접속을 허용했는지 (입장에 한 번 쓰이면 자동으로 false로 돌아감)
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean rejoinAllowed = false;
@@ -57,10 +61,11 @@ public class Player {
         this.token = newToken;
     }
 
-    // 게임 시작 시 캐릭터와 비밀 카드를 배정 (값은 enum의 이름 문자열)
-    public void assign(String characterKey, String secretRole) {
+    // 게임 시작 시 캐릭터, 비밀 카드, 성을 배정
+    public void assign(String characterKey, String secretRole, String surname) {
         this.characterKey = characterKey;
         this.secretRole = secretRole;
+        this.surname = surname;
     }
 
     public void setRejoinAllowed(boolean rejoinAllowed) {
@@ -71,10 +76,11 @@ public class Player {
         this.ready = true;
     }
 
-    // 개발용: 역할 배정과 진행 상태를 모두 초기화
+    // 역할 배정과 진행 상태를 모두 초기화
     public void resetGame() {
         this.characterKey = null;
         this.secretRole = null;
+        this.surname = null;
         this.ready = false;
         this.rejoinAllowed = false;
     }
@@ -86,6 +92,7 @@ public class Player {
     public String getToken() { return token; }
     public String getCharacterKey() { return characterKey; }
     public String getSecretRole() { return secretRole; }
+    public String getSurname() { return surname; }
     public boolean isRejoinAllowed() { return rejoinAllowed; }
     public boolean isReady() { return ready; }
 }

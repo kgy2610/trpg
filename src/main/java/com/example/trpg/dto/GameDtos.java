@@ -8,7 +8,12 @@ public class GameDtos {
 
     // 캐릭터 카드 (플레이어용, 스포일러 없음)
     public record CharacterCard(String key, String name, String job, String concept,
-                                int strength, int mind, int charm, List<String> abilities) {}
+                                int strength, int mind, int charm, List<String> abilities) {
+
+        public CharacterCard withName(String newName) {
+            return new CharacterCard(key, newName, job, concept, strength, mind, charm, abilities);
+        }
+    }
 
     // 비밀 카드
     public record SecretCard(String type, String title, String description) {}
