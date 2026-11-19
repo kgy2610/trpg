@@ -86,8 +86,7 @@
             <section class="card fit" id="dev-card" hidden>
             <h2>개발용 도구 (GM 전용)</h2>
             <p class="hint">
-                게임을 강제로 중단하고 모든 참가자를 대기실로 돌려보냅니다. 역할,
-                시계, 단서, 판정 기록이 모두 초기화됩니다. 배포 전 삭제될 기능.
+                게임을 강제로 중단하고 모든 참가자를 대기실로 돌려보냅니다. 역할, 시계, 단서, 판정 기록이 모두 초기화됩니다. 배포 전 삭제될 기능.
             </p>
             <button id="dev-reset" type="button" class="danger">
                 게임 강제 중단 (대기실로)
@@ -143,19 +142,11 @@
         <div class="col col-right">
             <section class="card tabs-card fit" id="tabs-card">
             <div class="tab-bar" id="tab-bar">
-                <button type="button" class="tab" data-tab="gm-card">배정표</button>
-                <button type="button" class="tab" data-tab="character-card">
-                내 캐릭터
-                </button>
-                <button type="button" class="tab" data-tab="secret-card">
-                비밀 카드
-                </button>
-                <button type="button" class="tab" data-tab="players-card">
-                참가자
-                </button>
-                <button type="button" class="tab" data-tab="rules-card">
-                판정 규칙
-                </button>
+                <button type="button" class="tab" data-tab="gm-card" data-hide-on-end>배정표</button>
+                <button type="button" class="tab" data-tab="character-card">내 캐릭터</button>
+                <button type="button" class="tab" data-tab="secret-card" data-hide-on-end>비밀 카드</button>
+                <button type="button" class="tab" data-tab="players-card">참가자</button>
+                <button type="button" class="tab" data-tab="rules-card">판정 규칙</button>
             </div>
             <div class="tab-panes">
                 <!-- GM에게만 보임 -->
