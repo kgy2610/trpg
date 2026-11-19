@@ -1,184 +1,290 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>게임 - 마지막 열차</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>게임 - 마지막 열차</title>
+        <link rel="stylesheet" href="/css/style.css" />
     </head>
-    <body>
-    <main class="container">
-        <h1>마지막 열차</h1>
-        <p id="phase" class="hint"></p>
+    <body class="game-page">
+        <div class="app">
+        <div class="col col-left">
+            <section class="card fit" id="timer-card" hidden>
+            <h2>읽기 시간</h2>
+            <p id="timer" class="timer"></p>
+            <p id="timer-note" class="hint">
+                남은 시간 동안 카드를 읽고 숙지하세요.
+            </p>
+            <p id="ready-count" class="hint"></p>
+            <button id="ready-btn" type="button" hidden>읽었어요</button>
+            <button id="begin-btn" type="button" class="secondary" hidden>
+                바로 게임 시작
+            </button>
+            </section>
 
-        <section class="card" id="ending-card" hidden>
+            <section class="card fit card-split" id="clock-card" hidden>
+                <div class="card-fixed">
+                <div class="clock-head">
+                    <h2>시계</h2>
+                    <p id="clock-note" class="hint"></p>
+                </div>
+                <div id="clock-cells" class="clock-cells"></div>
+                <div id="clock-gm" class="clock-gm" hidden>
+                    <button id="clock-minus" type="button" class="secondary">-1</button>
+                    <button id="clock-plus" type="button">+1</button>
+                </div>
+                <h3 id="clock-events-title" hidden>칸별 사건 (GM 전용)</h3>
+                </div>
+                <div class="card-scroll">
+                <ul id="clock-events" class="abilities" hidden></ul>
+                </div>
+            </section>
+
+            <section class="card grow" id="clues-card" hidden>
+            <h2>공개된 단서</h2>
+            <p id="clues-empty" class="hint">아직 공개된 단서가 없습니다.</p>
+            <div id="clues-list"></div>
+            </section>
+
+            <section class="card grow card-split" id="clue-gm-card" hidden>
+                <div class="card-fixed">
+                    <h2>단서 관리 (GM 전용)</h2>
+                    <p class="hint">'공개'를 누르면 모든 플레이어의 화면에 이 단서가 나타납니다. 실수했다면 '숨기기'로 되돌릴 수 있습니다.</p>
+                </div>
+                    <div class="card-scroll">
+                    <div id="clue-gm-list"></div>
+                </div>
+            </section>
+
+            <section class="card grow" id="whisper-card" hidden>
+            <h2>GM의 귓속말</h2>
+            <p class="hint">
+                GM이 나에게만 보낸 글입니다. 다른 사람에게는 보이지 않습니다.
+            </p>
+            <p id="whisper-empty" class="hint">아직 받은 귓속말이 없습니다.</p>
+            <div id="whisper-list"></div>
+            </section>
+
+            <section class="card grow card-split" id="whisper-gm-card" hidden>
+                <div class="card-fixed">
+                <h2>귓속말 보내기 (GM 전용)</h2>
+                <p class="hint">선택한 플레이어에게만 전달됩니다.</p>
+                <select id="whisper-target"></select>
+                <textarea id="whisper-text" maxlength="200" placeholder="전하고 싶은 내용 (최대 200자)"></textarea>
+                <div class="whisper-send-row">
+                    <span id="whisper-count" class="hint">0 / 200</span>
+                    <button id="whisper-send" type="button">귓속말 보내기</button>
+                </div>
+                <h3>보낸 기록</h3>
+                </div>
+                <div class="card-scroll">
+                <p id="whisper-log-empty" class="hint">아직 보낸 귓속말이 없습니다.</p>
+                <div id="whisper-log"></div>
+                </div>
+            </section>
+
+            <section class="card fit" id="dev-card" hidden>
+            <h2>개발용 도구 (GM 전용)</h2>
+            <p class="hint">
+                게임을 강제로 중단하고 모든 참가자를 대기실로 돌려보냅니다. 역할,
+                시계, 단서, 판정 기록이 모두 초기화됩니다. 배포 전 삭제될 기능.
+            </p>
+            <button id="dev-reset" type="button" class="danger">
+                게임 강제 중단 (대기실로)
+            </button>
+            </section>
+        </div>
+
+        <div class="col col-center">
+            <div class="title-block">
+            <h1 class="page-title">마지막 열차</h1>
+            <p id="phase" class="hint"></p>
+            <p id="conn" class="hint"></p>
+            <p id="error" class="error" hidden></p>
+            </div>
+
+            <section class="card fit" id="opening-card">
+                <h2>오프닝</h2>
+                <div class="story">
+                    <p>새벽 1시 12분. 설산을 가로지르던 야간 특급 7호가 터널 한가운데서 멈춘다. 조명이 한 번 꺼졌다 켜진다. 승무원은 보이지 않는다. 기관실 문은 안에서 잠겨 있다.</p>
+                    <p>스피커에서 지직거리는 방송이 흘러나온다.<br>“이 열차는 60분 뒤 다시 출발합니다. 승객 여러분 중 한 명은 이 열차에 타선 안 될 사람입니다. 부디…”</p>
+                    <p>방송이 끊긴다. 복도 어딘가에서 누군가 비명을 지른다.</p>
+                </div>
+            </section>
+
+            <!-- 결말: 종료 후 모두에게 보임 -->
+            <section class="card grow-2" id="ending-card" hidden>
             <h2 id="ending-title"></h2>
             <p id="ending-epilogue" class="ending-epilogue"></p>
             <h3>정체 공개</h3>
             <p id="ending-stowaway" class="hint"></p>
             <table class="assign-table">
-                <thead><tr><th>이름</th><th>비밀 카드</th></tr></thead>
+                <thead>
+                <tr>
+                    <th>이름</th>
+                    <th>비밀 카드</th>
+                </tr>
+                </thead>
                 <tbody id="ending-assign"></tbody>
             </table>
-            <button id="ending-restart" type="button" hidden>새 판 시작 (대기실로)</button>
-        </section>
+            <button id="ending-restart" type="button" hidden>
+                새 판 시작 (대기실로)
+            </button>
+            </section>
 
-        <section class="card" id="timer-card" hidden>
-            <h2>읽기 시간</h2>
-            <p id="timer" class="timer"></p>
-            <p id="timer-note" class="hint">남은 시간 동안 아래 카드를 읽고 숙지하세요.</p>
-            <p id="ready-count" class="hint"></p>
-            <button id="ready-btn" type="button" hidden>읽었어요</button>
-            <button id="begin-btn" type="button" class="secondary" hidden>바로 게임 시작</button>
-        </section>
+            <!-- 이벤트 기록: 지금은 빈 자리. 3단계에서 기능을 붙임 -->
+            <section class="card grow" id="events-card">
+            <h2>이벤트 기록</h2>
+            <p class="hint">아직 기록이 없습니다.</p>
+            <div id="events-list"></div>
+            </section>
+        </div>
 
-        <section class="card" id="clock-card" hidden>
-            <h2>시계</h2>
-            <div id="clock-cells" class="clock-cells"></div>
-            <p id="clock-note" class="hint"></p>
-            <div id="clock-gm" class="clock-gm" hidden>
-                <button id="clock-minus" type="button" class="secondary">-1</button>
-                <button id="clock-plus" type="button">+1</button>
+        <div class="col col-right">
+            <section class="card tabs-card fit" id="tabs-card">
+            <div class="tab-bar" id="tab-bar">
+                <button type="button" class="tab" data-tab="gm-card">배정표</button>
+                <button type="button" class="tab" data-tab="character-card">
+                내 캐릭터
+                </button>
+                <button type="button" class="tab" data-tab="secret-card">
+                비밀 카드
+                </button>
+                <button type="button" class="tab" data-tab="players-card">
+                참가자
+                </button>
+                <button type="button" class="tab" data-tab="rules-card">
+                판정 규칙
+                </button>
             </div>
-            <h3 id="clock-events-title" hidden>칸별 사건 (GM 전용)</h3>
-            <ul id="clock-events" class="abilities" hidden></ul>
-        </section>
+            <div class="tab-panes">
+                <!-- GM에게만 보임 -->
+                <div class="tab-pane" id="gm-card" hidden>
+                <p class="hint">
+                    GM은 모든 배정을 알고 진행합니다. 이 화면을 다른 사람에게
+                    보여주지 마세요.
+                </p>
+                <table class="assign-table">
+                    <thead>
+                    <tr>
+                        <th>이름</th>
+                        <th>직업</th>
+                        <th>비밀 카드</th>
+                    </tr>
+                    </thead>
+                    <tbody id="assign-body"></tbody>
+                </table>
+                </div>
 
-        <section class="card" id="whisper-card" hidden>
-            <h2>GM의 귓속말</h2>
-            <p class="hint">GM이 나에게만 보낸 글입니다. 다른 사람에게는 보이지 않습니다.</p>
-            <p id="whisper-empty" class="hint">아직 받은 귓속말이 없습니다.</p>
-            <div id="whisper-list"></div>
-        </section>
+                <!-- 플레이어에게만 보임 -->
+                <div class="tab-pane" id="character-card" hidden>
+                <p>
+                    <strong id="char-name"></strong> · <span id="char-job"></span>
+                </p>
+                <p class="hint" id="char-concept"></p>
+                <div class="stats">
+                    <div class="stat">
+                    <b id="stat-strength"></b><span>힘</span>
+                    </div>
+                    <div class="stat"><b id="stat-mind"></b><span>지능</span></div>
+                    <div class="stat"><b id="stat-charm"></b><span>매력</span></div>
+                </div>
+                <h3>할 수 있는 일</h3>
+                <ul id="char-abilities" class="abilities"></ul>
+                </div>
 
-        <section class="card" id="clues-card" hidden>
-            <h2>공개된 단서</h2>
-            <p id="clues-empty" class="hint">아직 공개된 단서가 없습니다.</p>
-            <div id="clues-list"></div>
-        </section>
+                <div class="tab-pane" id="secret-card" hidden>
+                <h2 id="secret-title">비밀 카드</h2>
+                <p id="secret-body" class="secret-body"></p>
+                <button id="secret-toggle" type="button"></button>
+                </div>
 
-        <!-- 단서 관리: GM에게만 보임 -->
-        <section class="card" id="clue-gm-card" hidden>
-            <h2>단서 관리 (GM 전용)</h2>
-            <p class="hint">'공개'를 누르면 모든 플레이어의 화면에 이 단서가 나타납니다. 실수했다면 '숨기기'로 되돌릴 수 있습니다.</p>
-            <div id="clue-gm-list"></div>
-        </section>
+                <!-- 모두에게 보임 -->
+                <div class="tab-pane" id="players-card">
+                <ul id="players" class="players"></ul>
+                <p id="players-hint" class="hint" hidden>
+                    접속이 끊긴 참가자에게 '재접속 허용'을 누르면, 그 사람이 방
+                    코드와 같은 닉네임으로 다시 입장해 기존 역할을 이어받을 수
+                    있습니다. 허용은 한 번 입장하면 자동으로 꺼집니다.
+                </p>
+                </div>
 
-        <section class="card" id="whisper-gm-card" hidden>
-            <h2>귓속말 보내기 (GM 전용)</h2>
-            <p class="hint">선택한 플레이어에게만 전달됩니다. 다른 플레이어에게는 어떤 경로로도 보이지 않습니다.</p>
-            <select id="whisper-target"></select>
-            <textarea id="whisper-text" maxlength="200" placeholder="전하고 싶은 내용 (최대 200자)"></textarea>
-            <p id="whisper-count" class="hint">0 / 200</p>
-            <button id="whisper-send" type="button">귓속말 보내기</button>
-            <h3>보낸 기록</h3>
-            <p id="whisper-log-empty" class="hint">아직 보낸 귓속말이 없습니다.</p>
-            <div id="whisper-log"></div>
-        </section>
+                <div class="tab-pane" id="rules-card">
+                <ul class="abilities">
+                    <li>
+                    위험하거나 결과가 불확실한 행동을 할 때만 2d6 + 능력치를
+                    굴립니다.
+                    </li>
+                    <li>
+                    10 이상은 성공, 7~9는 대가를 치르는 성공, 6 이하는 실패이며
+                    상황이 나빠집니다.
+                    </li>
+                    <li>
+                    사건이 터지거나 판정에 실패할 때마다 시계(6칸)가 차오릅니다.
+                    6칸이 차면 열차가 출발합니다.
+                    </li>
+                </ul>
+                </div>
+            </div>
+            </section>
 
-        <section class="card" id="dice-card" hidden>
+            <section class="card grow-2" id="dice-card" hidden>
             <h2>주사위 판정</h2>
-            <p id="dice-gm-hint" class="hint" hidden>플레이어가 굴린 결과가 아래에 표시됩니다. 판정 결과에 따라 시계는 GM이 직접 올립니다.</p>
+            <p id="dice-gm-hint" class="hint" hidden>
+                플레이어가 굴린 결과가 아래에 표시됩니다. 판정 결과에 따라 시계는 GM이 직접 올립니다.
+            </p>
 
             <!-- 굴리기 컨트롤: 플레이어에게만 보임 -->
             <div id="dice-controls" hidden>
-                <p class="hint">위험하거나 결과가 불확실한 행동을 할 때 굴립니다. 능력치를 고르세요.</p>
+                <p class="hint">
+                위험하거나 결과가 불확실한 행동을 할 때 굴립니다. 능력치를 고르세요.
+                </p>
                 <div id="dice-stats" class="dice-stats"></div>
-                <input id="dice-reason" type="text" maxlength="30" placeholder="무엇을 하나요? (선택, 예: 문 부수기)">
+                <input
+                id="dice-reason"
+                type="text"
+                maxlength="30"
+                placeholder="무엇을 하나요? (선택, 예: 문 부수기)"
+                />
                 <button id="dice-roll" type="button">주사위 굴리기</button>
             </div>
 
             <h3>판정 기록</h3>
             <p id="dice-empty" class="hint">아직 굴린 주사위가 없습니다.</p>
             <div id="dice-log"></div>
-        </section>
-
-        <section class="card" id="ending-gm-card" hidden>
-            <h2>결말 진행 (GM 전용)</h2>
-            <p class="hint">진행 상황을 보고 두 가지 조건을 직접 체크하세요. 플레이어에게는 어떤 경로로도 보이지 않습니다.</p>
-            <label class="check-row"><input type="checkbox" id="cond-engine"> 기관실을 열고 정지 레버를 내렸다 (A)</label>
-            <label class="check-row"><input type="checkbox" id="cond-docs"> 서류를 확보하고 공개 준비를 마쳤다 (B)</label>
-            <p class="hint">지금 조건이면 결말: <strong id="ending-preview"></strong></p>
-            <button id="ending-finish" type="button" class="danger">결말 진행</button>
-        </section>
-
-        <section class="card" id="opening-card">
-        <h2>오프닝</h2>
-        <p class="story">새벽 1시 12분. 설산을 가로지르던 야간 특급 7호가 터널 한가운데서 멈춘다. 조명이 한 번 꺼졌다 켜진다. 승무원은 보이지 않는다. 기관실 문은 안에서 잠겨 있다.
-
-                        스피커에서 지직거리는 방송이 흘러나온다.
-                        “이 열차는 60분 뒤 다시 출발합니다. 승객 여러분 중 한 명은 이 열차에 타선 안 될 사람입니다. 부디…”
-
-                        방송이 끊긴다. 복도 어딘가에서 누군가 비명을 지른다.</p>
-        </section>
-
-        <!-- 플레이어에게만 보임 -->
-        <section class="card" id="character-card" hidden>
-        <h2>내 캐릭터</h2>
-        <p><strong id="char-name"></strong> · <span id="char-job"></span></p>
-        <p class="hint" id="char-concept"></p>
-        <div class="stats">
-            <div class="stat"><b id="stat-strength"></b><span>힘</span></div>
-            <div class="stat"><b id="stat-mind"></b><span>머리</span></div>
-            <div class="stat"><b id="stat-charm"></b><span>매력</span></div>
-        </div>
-        <h3>할 수 있는 일</h3>
-        <ul id="char-abilities" class="abilities"></ul>
-        </section>
-
-        <section class="card" id="secret-card" hidden>
-        <h2 id="secret-title">비밀 카드</h2>
-        <p id="secret-body" class="secret-body"></p>
-        <button id="secret-toggle" type="button"></button>
-        </section>
-
-        <!-- GM에게만 보임 -->
-        <section class="card" id="gm-card" hidden>
-            <h2>배정표 (GM 전용)</h2>
-            <p class="hint">GM은 모든 배정을 알고 진행합니다. 이 화면을 다른 사람에게 보여주지 마세요.</p>
-            <table class="assign-table">
-                <thead><tr><th>이름</th><th>직업</th><th>비밀 카드</th></tr></thead>
-                <tbody id="assign-body"></tbody>
-            </table>
-        </section>
-
-        <section class="card" id="players-card">
-            <h2>참가자</h2>
-            <ul id="players" class="players"></ul>
-            <p id="players-hint" class="hint" hidden>
-                접속이 끊긴 참가자에게 '재접속 허용'을 누르면, 그 사람이 방 코드와 같은 닉네임으로 다시 입장해 기존 역할을 이어받을 수 있습니다. 허용은 한 번 입장하면 자동으로 꺼집니다.
-            </p>
             </section>
 
-            <section class="card">
-            <h2>판정 규칙</h2>
-            <ul class="abilities">
-                <li>위험하거나 결과가 불확실한 행동을 할 때만 2d6 + 능력치를 굴립니다.</li>
-                <li>10 이상은 성공, 7~9는 대가를 치르는 성공, 6 이하는 실패이며 상황이 나빠집니다.</li>
-                <li>사건이 터지거나 판정에 실패할 때마다 시계(6칸)가 차오릅니다. 6칸이 차면 열차가 출발합니다.</li>
-            </ul>
-        </section>
+            <section class="card fit" id="ending-gm-card" hidden>
+            <h2>결말 진행 (GM 전용)</h2>
+            <p class="hint">
+                진행 상황을 보고 두 가지 조건을 직접 체크하세요. 플레이어에게는 어떤 경로로도 보이지 않습니다.
+            </p>
+            <label class="check-row">
+                <input type="checkbox" id="cond-engine" /> 기관실을 열고 정지 레버를 내렸다 (A)</label>
+            <label class="check-row">
+                <input type="checkbox" id="cond-docs" /> 서류를 확보하고 공개 준비를 마쳤다 (B)</label>
+            <p class="hint">
+                지금 조건이면 결말: <strong id="ending-preview"></strong>
+            </p>
+            <button id="ending-finish" type="button" class="danger">
+                결말 진행
+            </button>
+            </section>
+        </div>
+        </div>
 
-        <!-- [추가] 판정 규칙 섹션 아래, conn 문단 위에 추가. 개발용이라 배포 전에 삭제할 것 -->
-        <section class="card" id="dev-card" hidden>
-            <h2>개발용 도구 (GM 전용)</h2>
-            <p class="hint">게임을 강제로 중단하고 모든 참가자를 대기실로 돌려보냅니다. 역할, 시계, 단서, 판정 기록이 모두 초기화됩니다. 배포 전에 삭제할 기능입니다.</p>
-            <button id="dev-reset" type="button" class="danger">게임 강제 중단 (대기실로)</button>
-        </section>
+        <div id="whisper-toast" class="toast" hidden>
+        GM의 귓속말이 도착했습니다. 눌러서 확인하세요.
+        </div>
 
-        <p id="conn" class="hint"></p>
-        <p id="error" class="error" hidden></p>
-    </main>
-
-    <div id="whisper-toast" class="toast" hidden>GM의 귓속말이 도착했습니다. 눌러서 확인하세요.</div>
-
-    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
-    <script src="/js/clock.js"></script>
-    <script src="/js/clues.js"></script>
-    <script src="/js/dice.js"></script>
-    <script src="/js/whisper.js"></script>
-    <script src="/js/ending.js"></script>
-    <script src="/js/game.js"></script>
-    <script src="/js/dev.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+        <script src="/js/clock.js"></script>
+        <script src="/js/clues.js"></script>
+        <script src="/js/dice.js"></script>
+        <script src="/js/whisper.js"></script>
+        <script src="/js/ending.js"></script>
+        <script src="/js/tabs.js"></script>
+        <script src="/js/game.js"></script>
+        <script src="/js/dev.js"></script>
     </body>
 </html>

@@ -245,6 +245,7 @@ function renderPlayers(room) {
     renderDiceCard(room);     // 주사위 카드 표시
     renderWhisperCards(room); // 귓속말 카드 표시
     renderEndingCards(room);  // 결말 카드 표시
+    if (typeof renderDevCard === 'function') renderDevCard(room);
 }
 
 // 참가자 목록을 처음 한 번 REST로 가져옴
@@ -282,7 +283,7 @@ function startTimer(endsAtMillis, serverNowMillis) {
         setText('timer', mm + ':' + ss);
     };
 
-    setText('timer-note', '남은 시간 동안 아래 카드를 읽고 숙지하세요.');
+    setText('timer-note', '남은 시간 동안 카드를 읽고 숙지하세요.');
     tick();
     timerId = setInterval(tick, 1000);
 }

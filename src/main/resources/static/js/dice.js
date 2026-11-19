@@ -1,6 +1,6 @@
 const ROLL_COOLDOWN_MS = 3000;   // 서버의 쿨다운(3초)과 맞춤. 더블클릭으로 두 번 굴러지는 것을 화면에서도 막음
 const STAT_ORDER = ['STRENGTH', 'MIND', 'CHARM'];
-const STAT_LABEL = { STRENGTH: '힘', MIND: '머리', CHARM: '매력' };
+const STAT_LABEL = { STRENGTH: '힘', MIND: '지능', CHARM: '매력' };
 
 let diceCharacter = null;     // 내 캐릭터 (GM은 null). 능력치 값을 버튼에 표시하는 데 사용
 let diceStat = 'STRENGTH';    // 지금 고른 능력치

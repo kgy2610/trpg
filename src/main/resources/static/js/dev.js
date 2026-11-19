@@ -1,10 +1,12 @@
 const devCard = document.getElementById('dev-card');
 const devResetBtn = document.getElementById('dev-reset');
 
-// GM에게만 표시 (서버도 GM만 허용하므로 화면과 서버가 일치)
-devCard.hidden = !session.gm;
+// 방 상태가 바뀔 때마다 game.js의 renderPlayers가 호출 (서버도 GM만 허용하므로 화면과 서버가 일치)
+function renderDevCard(room) {
+    devCard.hidden = !(session.gm && room.status === 'READING');
+    }
 
-devResetBtn.addEventListener('click', async () => {
+    devResetBtn.addEventListener('click', async () => {
     if (!confirm('게임을 강제로 중단하고 모든 참가자를 대기실로 돌려보낼까요?\n역할, 시계, 단서, 판정 기록이 모두 초기화됩니다.')) return;
 
     devResetBtn.disabled = true;   // 연속 클릭 방지

@@ -12,6 +12,7 @@ function renderClock(room) {
     // 게임 진행 중일 때만 표시
     const show = room.status === 'PLAYING';
     document.getElementById('clock-card').hidden = !show;
+    document.getElementById('clock-card').classList.toggle('with-events', session.gm);   // [추가] GM은 칸별 사건 목록이 있어서 카드를 크게 잡음
     if (!show) return;
 
     currentClock = room.clockValue;

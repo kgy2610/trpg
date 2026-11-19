@@ -24,8 +24,8 @@ function setWhisperAssignments(assignments) {
         return;
     }
     whisperTargets = assignments.map((a) => ({
-        nickname: a.nickname,
-        label: a.characterName + ' (' + a.nickname + ')' + (a.secretTitle === '밀항자' ? ' · 밀항자' : '')
+        nickname: a.nickname,   // 서버에 보낼 때는 닉네임으로 받는 사람을 찾으므로 값은 그대로 유지
+        label: a.characterName + ' · ' + a.job + (a.secretTitle === '밀항자' ? ' · 밀항자' : '')
     }));
     renderWhisperTargets();
 }
