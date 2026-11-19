@@ -624,3 +624,5 @@ body.is-ended #secret-card { display: none; }
     grid-template-columns: minmax(300px, 1fr) minmax(420px, 1.5fr) minmax(300px, 1fr);
   }
 }
+
+#ending-title { text-align: center; }
