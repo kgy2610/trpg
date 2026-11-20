@@ -245,6 +245,7 @@ function renderPlayers(room) {
     renderDiceCard(room);     // 주사위 카드 표시
     renderWhisperCards(room); // 귓속말 카드 표시
     renderEndingCards(room);  // 결말 카드 표시
+    renderEventsCard(room);   // 이벤트 기록 입력 줄 표시
     if (typeof renderDevCard === 'function') renderDevCard(room);
 }
 
@@ -367,11 +368,13 @@ function startRealtime() {
             // [추가] 개인 채널: 나에게만 오는 귓속말 (플레이어), 내가 보낸 기록 (GM)
             stompClient.subscribe('/user/queue/whisper', (m) => renderWhispers(JSON.parse(m.body), true));
             stompClient.subscribe('/user/queue/whisper-log', (m) => renderGmWhispers(JSON.parse(m.body)));
+            stompClient.subscribe('/topic/room/' + session.code + '/events', (m) => onEventsChange(JSON.parse(m.body)));
             loadRole();      // 구독 후에 한 번 조회해서 그 사이의 변화를 놓치지 않음
             loadPlayers();
             loadClues();
             loadDice();
             loadWhispers();
+            loadEvents();
         },
         onWebSocketClose: () => {
         if (!stopped) setConn('연결이 끊겼습니다. 다시 연결하는 중…');

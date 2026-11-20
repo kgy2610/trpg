@@ -626,3 +626,22 @@ body.is-ended #secret-card { display: none; }
 }
 
 #ending-title { text-align: center; }
+
+.ev-item { display: flex; align-items: flex-start; gap: 8px; padding: 5px 0; line-height: 1.6; }
+.ev-body { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.ev-name { font-weight: 700; margin-right: 8px; }
+.ev-npc .ev-name { color: #c9a24b; }      /* NPC: 금색 */
+.ev-player .ev-name { color: #8fb8ff; }   /* 플레이어: 파랑 */
+.ev-system { color: #9a9aa6; font-size: 14px; }   /* 자동 기록: 회색 한 줄 */
+.ev-item.fresh { animation: dice-flash 1.5s ease-out; }
+button.ev-del { flex: none; padding: 0 6px; background: transparent; color: #6f7384; font-size: 16px; line-height: 1;}
+button.ev-del:hover { color: #e06c6c; }
+
+.events-form {
+  display: flex; flex-direction: row; gap: 8px; align-items: center; margin-top: 10px;}
+.events-form #events-text {
+  flex: 1; min-width: 0; padding: 10px; border: 1px solid #3a3f4e; border-radius: 6px;
+  background: #14161c; color: inherit; font-size: 15px; font-family: inherit;
+}
+.events-form #events-speaker { width: auto; flex: none; margin: 0; }
+.events-form button { flex: none; }

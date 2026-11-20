@@ -86,15 +86,20 @@ public class EventLogService {
             if (speaker == null || !EventLogContent.npcSpeakers().contains(speaker)) {
                 throw new ApiException(HttpStatus.BAD_REQUEST, "말할 NPC를 목록에서 골라 주세요.");
             }
-            kind = EventKind.NPC;
-            displayName = speaker;
+            // [수정] "방송"은 이름 없는 시스템 문장으로 기록 (시계/단서 자동 기록과 같은 모양)
+            if (EventLogContent.BROADCAST.equals(speaker)) {
+                kind = EventKind.SYSTEM;
+                displayName = null;
+            } else {
+                kind = EventKind.NPC;
+                displayName = speaker;
+            }
         } else {
             if (me.getCharacterKey() == null) {
                 throw new ApiException(HttpStatus.CONFLICT, "역할이 아직 배정되지 않았습니다.");
             }
             kind = EventKind.PLAYER;
             displayName = GameContent.displayName(me);
-            displayName = GameContent.character(GameCharacter.valueOf(me.getCharacterKey())).name();
         }
 
         Optional<EventLogEntry> last = entryRepository.findFirstBySenderOrderByIdDesc(me);

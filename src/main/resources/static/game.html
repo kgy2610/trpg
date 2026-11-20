@@ -131,11 +131,17 @@
             </button>
             </section>
 
-            <!-- 이벤트 기록: 지금은 빈 자리. 3단계에서 기능을 붙임 -->
-            <section class="card grow" id="events-card">
-            <h2>이벤트 기록</h2>
-            <p class="hint">아직 기록이 없습니다.</p>
-            <div id="events-list"></div>
+            <!-- 이벤트 기록 -->
+            <section class="card grow card-split" id="events-card">
+                <div class="card-fixed">
+                    <h2>이벤트 기록</h2>
+                </div>
+                <div class="card-scroll" id="events-list"></div>
+                <form class="card-fixed events-form" id="events-form" hidden>
+                    <select id="events-speaker" aria-label="말하는 NPC" hidden></select>
+                    <input id="events-text" type="text" maxlength="200" autocomplete="off" placeholder="내용을 입력하세요 (최대 200자)">
+                    <button id="events-send" type="submit">보내기</button>
+                </form>
             </section>
         </div>
 
@@ -273,6 +279,7 @@
         <script src="/js/clues.js"></script>
         <script src="/js/dice.js"></script>
         <script src="/js/whisper.js"></script>
+        <script src="/js/events.js"></script>
         <script src="/js/ending.js"></script>
         <script src="/js/tabs.js"></script>
         <script src="/js/game.js"></script>

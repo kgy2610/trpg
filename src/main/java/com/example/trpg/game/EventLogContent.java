@@ -11,11 +11,12 @@ public final class EventLogContent {
     public static final int MAX_LENGTH = 200;
     // 같은 사람이 연속으로 보낼 수 있는 최소 간격
     public static final long MIN_INTERVAL_MILLIS = 1000;
+    public static final String BROADCAST = "시스템";
 
     // GM이 고를 수 있는 NPC 이름
     private static final List<String> NPC_SPEAKERS = List.of(
             "차장 주민식", "견습생 최민부", "노부인 윤말순",
-            "승객1", "승객2", "승객3", "방송");
+            "승객1", "승객2", "승객3", BROADCAST);
 
     public static List<String> npcSpeakers() {
         return NPC_SPEAKERS;
