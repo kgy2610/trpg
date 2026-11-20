@@ -13,6 +13,8 @@ import com.example.trpg.game.GameContent;
 import com.example.trpg.game.SecretRole;
 import com.example.trpg.repository.PlayerRepository;
 import com.example.trpg.repository.RoomRepository;
+import com.example.trpg.service.GameService.RoleDelivery;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,13 +37,16 @@ public class GameService {
     private final RoomRepository roomRepository;
     private final PlayerRepository playerRepository;
     private final PresenceService presenceService;
+    private final EventLogService eventLogService;
 
     public GameService(RoomRepository roomRepository,
                         PlayerRepository playerRepository,
-                        PresenceService presenceService) {
+                        PresenceService presenceService,
+                        EventLogService eventLogService) {
         this.roomRepository = roomRepository;
         this.playerRepository = playerRepository;
         this.presenceService = presenceService;
+        this.eventLogService = eventLogService;
     }
 
     // 한 명에게 보낼 내용 (대상 playerId + 그 사람 전용 응답)
@@ -155,6 +160,7 @@ public class GameService {
         }
 
         room.setClockValue(value);   // 트랜잭션이 끝날 때 자동으로 DB에 반영됨
+        eventLogService.recordClockArrival(room, value);
         return room.getCode();
     }
 

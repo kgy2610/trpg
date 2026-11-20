@@ -4,6 +4,7 @@ import com.example.trpg.domain.Player;
 import com.example.trpg.domain.Room;
 import com.example.trpg.repository.ClueRevealRepository;
 import com.example.trpg.repository.DiceRollRepository;
+import com.example.trpg.repository.EventLogEntryRepository;
 import com.example.trpg.repository.PlayerRepository;
 import com.example.trpg.repository.WhisperRepository;
 import org.springframework.stereotype.Service;
@@ -17,15 +18,18 @@ public class GameResetService {
     private final ClueRevealRepository clueRevealRepository;
     private final DiceRollRepository diceRollRepository;
     private final WhisperRepository whisperRepository;
+    private final EventLogEntryRepository eventLogEntryRepository;
 
     public GameResetService(PlayerRepository playerRepository,
                             ClueRevealRepository clueRevealRepository,
                             DiceRollRepository diceRollRepository,
-                            WhisperRepository whisperRepository) {
+                            WhisperRepository whisperRepository,
+                            EventLogEntryRepository eventLogEntryRepository) {
         this.playerRepository = playerRepository;
         this.clueRevealRepository = clueRevealRepository;
         this.diceRollRepository = diceRollRepository;
         this.whisperRepository = whisperRepository;
+        this.eventLogEntryRepository = eventLogEntryRepository;
     }
 
     // 방을 대기 상태로 되돌리고 게임 기록(귓속말, 판정, 단서 공개)과 참가자의 진행 상태를 모두 지움
@@ -33,6 +37,7 @@ public class GameResetService {
     @Transactional(propagation = Propagation.MANDATORY)
     public void resetRoom(Room room) {
         whisperRepository.deleteByRoom(room);
+        eventLogEntryRepository.deleteByRoom(room);
         diceRollRepository.deleteByRoom(room);
         clueRevealRepository.deleteByRoom(room);
         for (Player player : playerRepository.findByRoomOrderByIdAsc(room)) {

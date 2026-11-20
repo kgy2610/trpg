@@ -27,13 +27,16 @@ public class ClueService {
     private final RoomRepository roomRepository;
     private final PlayerRepository playerRepository;
     private final ClueRevealRepository clueRevealRepository;
+    private final EventLogService eventLogService;
 
     public ClueService(RoomRepository roomRepository,
-                       PlayerRepository playerRepository,
-                       ClueRevealRepository clueRevealRepository) {
+                        PlayerRepository playerRepository,
+                        ClueRevealRepository clueRevealRepository,
+                        EventLogService eventLogService) {
         this.roomRepository = roomRepository;
         this.playerRepository = playerRepository;
         this.clueRevealRepository = clueRevealRepository;
+        this.eventLogService = eventLogService;
     }
 
     // 방송용: 방 코드로 공개된 단서를 조회 (서버 내부에서만 호출되고, 요청자 확인은 호출 전에 끝나 있음)
@@ -89,6 +92,7 @@ public class ClueService {
         if (revealed) {
             if (existing.isEmpty()) {
                 clueRevealRepository.save(new ClueReveal(room, key));
+            eventLogService.recordClueReveal(room, key, ClueContent.find(key).get().title());
             }
         } else {
             existing.ifPresent(clueRevealRepository::delete);
